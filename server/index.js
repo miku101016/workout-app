@@ -36,6 +36,21 @@ app.delete('/api/workouts/:id', (req, res) => {
     res.json({ message: "削除成功" });
 });
 
+// API④: 更新API (PUT)
+app.put('/api/workouts/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { menu_name, weight_kg, reps } = req.body;
+    
+    const index = workoutTodos.findIndex(todo => todo.id === id);
+    if (index !== -1) {
+        workoutTodos[index] = { id, menu_name, weight_kg, reps };
+        console.log(`✅ ID: ${id} を更新しました`);
+        res.json({ message: "更新成功" });
+    } else {
+        res.status(404).json({ message: "データが見つかりません" });
+    }
+});
+
 app.listen(5000, () => {
-    console.log("🚀 Node.jsサーバーがポート5000で起動中！");
+    console.log("Node.jsサーバーがポート5000で起動中");
 });
