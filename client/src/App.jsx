@@ -74,9 +74,13 @@ function App() {
                 // 編集モード
                 <div className="d-flex align-items-center">
                   <input className="form-control me-2" defaultValue={workout.menu_name} id={`edit-name-${workout.id}`} />
+                  <input className="form-control me-2" defaultValue={workout.weight_kg} id={`edit-weight-${workout.id}`} />
+                  <input className="form-control me-2" defaultValue={workout.reps} id={`edit-reps-${workout.id}`} />
                   <button className="btn btn-success btn-sm me-2" onClick={() => {
                     const newName = document.getElementById(`edit-name-${workout.id}`).value;
-                    updateWorkout(workout.id, { menu_name: newName, weight_kg: workout.weight_kg, reps: workout.reps });
+                    const newWeight = document.getElementById(`edit-weight-${workout.id}`).value;
+                    const newReps = document.getElementById(`edit-reps-${workout.id}`).value;
+                    updateWorkout(workout.id, { menu_name: newName, weight_kg: newWeight, reps: newReps });
                   }}>保存</button>
                   <button className="btn btn-secondary btn-sm" onClick={() => setEditingId(null)}>キャンセル</button>
                 </div>
