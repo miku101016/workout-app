@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { WorkoutForm } from './components/WorkoutForm';
 
 function App() {
   const [workouts, setWorkouts] = useState([]);
-  const [menuName, setMenuName] = useState('');
-  const [weight, setWeight] = useState('');
-  const [reps, setReps] = useState('');
   const [editingId, setEditingId] = useState(null);
 
   const fetchWorkouts = async () => {
@@ -15,14 +13,14 @@ function App() {
 
   useEffect(() => { fetchWorkouts(); }, []);
 
-  const handleAddWorkout = async (e) => {
-    e.preventDefault();
+  const handleAddWorkout = async (data) => {
+    // e.preventDefault();
     await fetch('http://localhost:5000/api/workouts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ menu_name: menuName, weight_kg: weight, reps: reps })
+      body: JSON.stringify(data)
     });
-    setMenuName(''); setWeight(''); setReps('');
+    // setMenuName(''); setWeight(''); setReps('');
     fetchWorkouts();
   };
 
@@ -44,27 +42,10 @@ function App() {
   return (
     <div className="container-fluid d-flex justify-content-center mt-5">
       <div style={{ width: '100%', maxWidth: '600px' }}>
-        
-        <h1 className="text-center mb-4">🏋️‍♂️ 筋トレ記録</h1>
-        
-        {/* フォーム部分 */}
-        <form onSubmit={handleAddWorkout} className="card p-4 shadow-sm mb-4">
-          <div className="mb-3">
-            <label className="form-label">種目名</label>
-            <input type="text" className="form-control" placeholder="例: ベンチプレス" value={menuName} onChange={(e) => setMenuName(e.target.value)} />
-          </div>
-          <div className="row mb-3">
-            <div className="col">
-              <label className="form-label">重量 (kg)</label>
-              <input type="number" className="form-control" placeholder="60" value={weight} onChange={(e) => setWeight(e.target.value)} />
-            </div>
-            <div className="col">
-              <label className="form-label">回数 (reps)</label>
-              <input type="number" className="form-control" placeholder="10" value={reps} onChange={(e) => setReps(e.target.value)} />
-            </div>
-          </div>
-          <button type="submit" className="btn btn-primary w-100">メニューに追加</button>
-        </form>
+      <h1>筋トレ記録</h1>
+      <WorkoutForm
+        onAdd={handleAddWorkout}
+      />
 
         {/* リスト部分 */}
         <div className="list-group">
