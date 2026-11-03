@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createWorkout, deleteWorkoutApi, getWorkouts, updateWorkoutApi } from "./api.js";
 import { WorkoutForm } from "./components/WorkoutForm";
 import { WorkoutList } from "./components/WorkoutList";
 
@@ -7,8 +8,7 @@ function App() {
   const [editingId, setEditingId] = useState(null);
 
   const fetchWorkouts = async () => {
-    const response = await fetch("http://localhost:5000/api/workouts");
-    const data = await response.json();
+    const data = await getWorkouts();
     setWorkouts(data);
   };
 
@@ -17,29 +17,17 @@ function App() {
   }, []);
 
   const handleAddWorkout = async (data) => {
-    // e.preventDefault();
-    await fetch("http://localhost:5000/api/workouts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    // setMenuName(''); setWeight(''); setReps('');
+    await createWorkout(data);
     fetchWorkouts();
   };
 
   const deleteWorkout = async (id) => {
-    await fetch(`http://localhost:5000/api/workouts/${id}`, {
-      method: "DELETE",
-    });
+    await deleteWorkoutApi(id);
     fetchWorkouts();
   };
 
   const updateWorkout = async (id, data) => {
-    await fetch(`http://localhost:5000/api/workouts/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    await updateWorkoutApi(id, data);
     setEditingId(null);
     fetchWorkouts();
   };
