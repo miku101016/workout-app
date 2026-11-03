@@ -1,50 +1,60 @@
+import { useState } from "react";
 export const WorkoutItem = (props) => {
-  const {  workout, editingId, setEditingId, deleteWorkout, updateWorkout } =
+  const { workout, editingId, setEditingId, deleteWorkout, updateWorkout } =
     props;
+  const [editName, setEditName] = useState(workout.menu_name);
+  const [editWeight, setEditWeight] = useState(workout.weight_kg);
+  const [editReps, setEditReps] = useState(workout.reps);
+  const handleSave = () => {
+    if (editName.trim() === "" || editWeight === "" || editReps === "") {
+      return;
+    }
+    const newName = editName;
+    const newWeight = editWeight;
+    const newReps = editReps;
+    updateWorkout(workout.id, {
+      menu_name: newName,
+      weight_kg: newWeight,
+      reps: newReps,
+    });
+  };
+  const handleEdit = () => {
+    setEditName(workout.menu_name);
+    setEditWeight(workout.weight_kg);
+    setEditReps(workout.reps);
+    setEditingId(workout.id);
+  };
   return (
-    <div key={workout.id} className="list-group-item shadow-sm mb-2 rounded">
+    <div className="list-group-item shadow-sm mb-2 rounded">
       {editingId === workout.id ? (
         // 編集モード
+
         <div className="d-flex align-items-center">
           <input
             className="form-control me-2"
-            defaultValue={workout.menu_name}
-            id={`edit-name-${workout.id}`}
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
           />
           <input
             className="form-control me-2"
-            defaultValue={workout.weight_kg}
-            id={`edit-weight-${workout.id}`}
+            type="number"
+            value={editWeight}
+            onChange={(e) => setEditWeight(e.target.value)}
           />
           <input
             className="form-control me-2"
-            defaultValue={workout.reps}
-            id={`edit-reps-${workout.id}`}
+            type="number"
+            value={editReps}
+            onChange={(e) => setEditReps(e.target.value)}
           />
-          <button
-            className="btn btn-success btn-sm me-2"
-            onClick={() => {
-              const newName = document.getElementById(
-                `edit-name-${workout.id}`,
-              ).value;
-              const newWeight = document.getElementById(
-                `edit-weight-${workout.id}`,
-              ).value;
-              const newReps = document.getElementById(
-                `edit-reps-${workout.id}`,
-              ).value;
-              updateWorkout(workout.id, {
-                menu_name: newName,
-                weight_kg: newWeight,
-                reps: newReps,
-              });
-            }}
-          >
+          <button className="btn btn-success btn-sm me-2" onClick={handleSave}>
             保存
           </button>
           <button
             className="btn btn-secondary btn-sm"
-            onClick={() => setEditingId(null)}
+            onClick={() => {
+              setEditingId(null);
+            }}
           >
             キャンセル
           </button>
@@ -61,7 +71,7 @@ export const WorkoutItem = (props) => {
           <div>
             <button
               className="btn btn-outline-secondary btn-sm me-2"
-              onClick={() => setEditingId(workout.id)}
+              onClick={handleEdit}
             >
               編集
             </button>

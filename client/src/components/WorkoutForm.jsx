@@ -8,11 +8,9 @@ export const WorkoutForm = (props) => {
   const handleSubmit = async (e) => {
     // ① ページの再読み込みを止める
     e.preventDefault();
-    if(
-      menuName.trim() === "" || weight === "" || reps === ""
-    ){
+    if (menuName.trim() === "" || weight === "" || reps === "") {
       return;
-    };
+    }
     // ② 3つの入力値を渡して onAdd を呼ぶ(完了を待つ)
     await onAdd({ menu_name: menuName, weight_kg: weight, reps: reps });
     // ③ 入力欄を空に戻す
