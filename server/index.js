@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const pool = require("./db");
 
 const app = express();
 app.use(cors());
@@ -49,6 +50,12 @@ app.put('/api/workouts/:id', (req, res) => {
     } else {
         res.status(404).json({ message: "データが見つかりません" });
     }
+});
+
+// 確認用:DB に問い合わせた結果を返す
+app.get("/api/health", async (req, res) => {
+  const [rows] = await pool.query("SELECT 1");
+  res.json(rows);
 });
 
 app.listen(5000, () => {
