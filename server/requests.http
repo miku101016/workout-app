@@ -1,6 +1,15 @@
-POST http://localhost:5000/api/exercises
+### 種目名を変更する(存在する id)
+PUT http://localhost:5000/api/exercises/30001
 Content-Type: application/json
 
 {
-  "name": "デッドリフト"
+  "name": "ルーマニアンデッドリフト"
+}
+
+### 存在しない id
+PUT http://localhost:5000/api/exercises/999999
+Content-Type: application/json
+
+{
+  "name": "テスト"
 }
