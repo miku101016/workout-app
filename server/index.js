@@ -52,9 +52,8 @@ app.put('/api/workouts/:id', (req, res) => {
     }
 });
 
-// 確認用:DB に問い合わせた結果を返す
-app.get("/api/health", async (req, res) => {
-  const [rows] = await pool.query("SELECT 1");
+app.get("/api/exercises", async (req, res) => {
+  const [rows] = await pool.query("SELECT * FROM exercises ORDER BY id");
   res.json(rows);
 });
 
