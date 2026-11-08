@@ -57,6 +57,15 @@ app.get("/api/exercises", async (req, res) => {
   res.json(rows);
 });
 
+app.post("/api/exercises", async (req, res) => {
+  // ① req.body から name を取り出す
+  const { name } = req.body;
+  // ② INSERT を実行する(? を使う)
+  const [result] = await pool.query("INSERT INTO exercises (name) VALUES (?)", [name]);
+  // ③ 追加した種目を返す
+  res.json({ id: result.insertId, name: name });
+});
+
 app.listen(5000, () => {
     console.log("Node.jsサーバーがポート5000で起動中");
 });
