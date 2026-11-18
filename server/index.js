@@ -59,11 +59,15 @@ app.get("/api/exercises", async (req, res) => {
 
 app.post("/api/exercises", async (req, res) => {
   // ① req.body から name を取り出す
-  const { name } = req.body;
+  const name = req.body.name?.trim();
+  if (!name) {
+    return res.status(400).json({ message: "種目名を入力してください" });
+  }
   // ② INSERT を実行する(? を使う)
-  const [result] = await pool.query("INSERT INTO exercises (name) VALUES (?)",
-    [name]
-  );
+  const [result] = await pool.query("INSERT INTO exercises (name) VALUES (?)", [
+    name,
+  ]);
+
   // ③ 追加した種目を返す
   res.json({ id: result.insertId, name: name });
 });
@@ -71,7 +75,10 @@ app.post("/api/exercises", async (req, res) => {
 app.put("/api/exercises/:id", async (req, res) => {
   // ① URL から id、body から name を取り出す
   const id = parseInt(req.params.id);
-  const new_name = req.body.name;
+  const new_name = req.body.name?.trim();
+  if (!new_name) {
+    return res.status(400).json({ message: "種目名を入力してください" });
+  }
   // ② UPDATE を実行する
   const [result] = await pool.query(
     "UPDATE exercises SET name = ? WHERE id = ?",
@@ -82,6 +89,7 @@ app.put("/api/exercises/:id", async (req, res) => {
     res.status(404).json({ message: "データが見つかりません" });
     return;
   }
+
   res.json({ id: id, name: new_name });
 });
 
@@ -89,10 +97,7 @@ app.delete("/api/exercises/:id", async (req, res) => {
   // ① URL から id を取り出す
   const id = parseInt(req.params.id);
   // ② DELETE を実行する
-  const [result] = await pool.query(
-    "DELETE FROM exercises WHERE id = ?",
-    [id]
-  );
+  const [result] = await pool.query("DELETE FROM exercises WHERE id = ?", [id]);
   // ③ 結果を返す
   if (result.affectedRows === 0) {
     res.status(404).json({ message: "データが見つかりません" });
