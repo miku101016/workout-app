@@ -27,3 +27,11 @@ Content-Type: application/json
 
 ### 削除
 DELETE http://localhost:5000/api/exercises/60002
+
+### 空白だけの名前
+POST http://localhost:5000/api/exercises
+Content-Type: application/json
+
+{
+  "name": "   "
+}

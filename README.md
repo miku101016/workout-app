@@ -39,3 +39,7 @@ App
 - 入力中の値: WorkoutForm 内で完結するためWorkoutForm に配置
 - 編集中の値: WorkoutItem 内で完結するため WorkoutItem に配置
 - editingId:編集できる行を1行だけにするには、「どの行を編集中か」を全行で共有する必要があるのため、親である App に配置
+
+## sql設計
+- name に NOT NULL と UNIQUE を付けた理由 : 空欄と重複を防ぐため
+VARCHAR(30) にした理由 : 種目名を十分に確保できる文字数が30文字であると考えたため
