@@ -1,9 +1,20 @@
+### 一覧取得
+GET http://localhost:5000/api/exercises
+
+### 追加
+POST http://localhost:5000/api/exercises
+Content-Type: application/json
+
+{
+  "name": "アームカール"
+}
+
 ### 種目名を変更する(存在する id)
 PUT http://localhost:5000/api/exercises/30001
 Content-Type: application/json
 
 {
-  "name": "ルーマニアンデッドリフト"
+  "name": "デッドリフト"
 }
 
 ### 存在しない id
@@ -13,3 +24,6 @@ Content-Type: application/json
 {
   "name": "テスト"
 }
+
+### 削除
+DELETE http://localhost:5000/api/exercises/60002

@@ -61,9 +61,9 @@ app.post("/api/exercises", async (req, res) => {
   // ① req.body から name を取り出す
   const { name } = req.body;
   // ② INSERT を実行する(? を使う)
-  const [result] = await pool.query("INSERT INTO exercises (name) VALUES (?)", [
-    name,
-  ]);
+  const [result] = await pool.query("INSERT INTO exercises (name) VALUES (?)",
+    [name]
+  );
   // ③ 追加した種目を返す
   res.json({ id: result.insertId, name: name });
 });
@@ -83,6 +83,22 @@ app.put("/api/exercises/:id", async (req, res) => {
     return;
   }
   res.json({ id: id, name: new_name });
+});
+
+app.delete("/api/exercises/:id", async (req, res) => {
+  // ① URL から id を取り出す
+  const id = parseInt(req.params.id);
+  // ② DELETE を実行する
+  const [result] = await pool.query(
+    "DELETE FROM exercises WHERE id = ?",
+    [id]
+  );
+  // ③ 結果を返す
+  if (result.affectedRows === 0) {
+    res.status(404).json({ message: "データが見つかりません" });
+    return;
+  }
+  res.json({ id: id });
 });
 
 app.listen(5000, () => {
